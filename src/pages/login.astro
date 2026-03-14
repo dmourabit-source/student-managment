@@ -1,0 +1,112 @@
+---
+// No server-side logic needed here right now, handled by client JS
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Girly Student Management ✨</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Satisfy&display=swap" rel="stylesheet">
+  <style>
+    /* Add extra styles for login page */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(255, 107, 157, 0.15);
+      backdrop-filter: blur(12px);
+      text-align: center;
+    }
+    .auth-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .auth-toggle button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      color: var(--purple);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      opacity: 0.6;
+    }
+    .auth-toggle button.active {
+      opacity: 1;
+      border-bottom: 2px solid var(--pink);
+    }
+    .login-form .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .login-logo {
+      font-family: 'Satisfy', cursive;
+      font-size: 2.5rem;
+      color: white;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.3);
+    }
+    .login-subtitle {
+      color: var(--pink);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div id="sparkles"></div>
+    <div class="login-card glass-card">
+      <h1 class="login-logo">Girly Academy ✨</h1>
+      <p class="login-subtitle">Where magic happens!</p>
+      
+      <div class="auth-toggle">
+        <button id="toggleLogin" class="active">Log In</button>
+        <button id="toggleRegister">Sign Up</button>
+      </div>
+
+      <form id="authForm" class="login-form">
+        <div id="authError" style="color:var(--pink);margin-bottom:10px;font-size:0.9rem;display:none;"></div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-icon">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" required placeholder="magic@academy.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" required placeholder="••••••••">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-magic login-btn" id="submitBtnText">Log In 💖</button>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline src="/js/login.js"></script>
+</body>
+</html>

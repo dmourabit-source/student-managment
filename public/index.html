@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌸 Student Management System</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Satisfy&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Floating sparkles background -->
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">🌸</div>
+      <h2 class="logo-text">Student<span>MS</span></h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link active" data-view="dashboard">
+        <i class="fas fa-sparkles"></i><span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-link" data-view="students">
+        <i class="fas fa-heart"></i><span>My Students</span>
+      </a>
+      <a href="#" class="nav-link" data-view="add-student">
+        <i class="fas fa-wand-magic-sparkles"></i><span>Add Student</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="quote-box" id="sidebarQuote">
+        <p class="quote-text">✨ Loading inspiration...</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+      <h1 class="page-title" id="pageTitle">
+        <span class="title-emoji">✨</span> Dashboard
+      </h1>
+      <div class="topbar-right">
+        <span class="greeting" id="greeting"></span>
+        <span class="date-display" id="dateDisplay"></span>
+      </div>
+    </header>
+
+    <!-- ═══════ DASHBOARD VIEW ═══════ -->
+    <section class="view active" id="dashboardView">
+      <!-- Motivational Banner -->
+      <div class="quote-banner" id="quoteBanner">
+        <div class="quote-content">
+          <span class="quote-icon">💭</span>
+          <div>
+            <p class="quote-main" id="quoteText">Loading inspiration...</p>
+            <p class="quote-author" id="quoteAuthor"></p>
+          </div>
+        </div>
+        <button class="btn-icon-round refresh-quote" onclick="loadQuote()" title="New quote">
+          <i class="fas fa-shuffle"></i>
+        </button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card pink-glow">
+          <div class="stat-icon pink"><i class="fas fa-users"></i></div>
+          <div class="stat-info">
+            <h3 id="statTotal">0</h3>
+            <p>Total Students</p>
+          </div>
+          <div class="stat-sparkle">👩‍🎓</div>
+        </div>
+        <div class="stat-card purple-glow">
+          <div class="stat-icon purple"><i class="fas fa-heart-pulse"></i></div>
+          <div class="stat-info">
+            <h3 id="statActive">0</h3>
+            <p>Active & Thriving</p>
+          </div>
+          <div class="stat-sparkle">💖</div>
+        </div>
+        <div class="stat-card gold-glow">
+          <div class="stat-icon gold"><i class="fas fa-crown"></i></div>
+          <div class="stat-info">
+            <h3 id="statGpa">0.00</h3>
+            <p>Average GPA</p>
+          </div>
+          <div class="stat-sparkle">⭐</div>
+        </div>
+        <div class="stat-card rose-glow">
+          <div class="stat-icon rose"><i class="fas fa-graduation-cap"></i></div>
+          <div class="stat-info">
+            <h3 id="statGraduated">0</h3>
+            <p>Graduated Queens</p>
+          </div>
+          <div class="stat-sparkle">🎓</div>
+        </div>
+      </div>
+
+      <!-- Top Student Spotlight -->
+      <div class="spotlight-card" id="spotlightCard" style="display:none;">
+        <div class="spotlight-badge">🌟 Star Student Spotlight</div>
+        <div class="spotlight-content">
+          <div class="spotlight-avatar" id="spotlightEmoji">👩‍🎓</div>
+          <div class="spotlight-info">
+            <h3 id="spotlightName">-</h3>
+            <p id="spotlightDetails">-</p>
+            <div class="spotlight-gpa">
+              <span class="gpa-label">GPA</span>
+              <span class="gpa-value" id="spotlightGpa">0.00</span>
+              <span class="gpa-title" id="spotlightTitle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card glass-card">
+          <h3 class="card-title"><i class="fas fa-book-open"></i> Students by Course</h3>
+          <div class="chart-container" id="courseChart"></div>
+        </div>
+        <div class="card glass-card">
+          <h3 class="card-title"><i class="fas fa-face-smile"></i> Mood Board</h3>
+          <div class="chart-container" id="moodChart"></div>
+        </div>
+        <div class="card glass-card">
+          <h3 class="card-title"><i class="fas fa-venus-mars"></i> Gender Vibes</h3>
+          <div class="chart-container" id="genderChart"></div>
+        </div>
+        <div class="card glass-card">
+          <h3 class="card-title"><i class="fas fa-clock"></i> Recently Added Cuties</h3>
+          <div class="recent-students" id="recentStudents"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ STUDENTS LIST VIEW ═══════ -->
+    <section class="view" id="studentsView">
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Search by name, email, or hobby... 🔍" />
+        </div>
+        <div class="filter-group">
+          <select id="filterCourse"><option value="">💐 All Courses</option></select>
+          <select id="filterStatus">
+            <option value="">🌈 All Status</option>
+            <option value="Active">💚 Active</option>
+            <option value="Inactive">🤍 Inactive</option>
+            <option value="Graduated">💙 Graduated</option>
+            <option value="Suspended">❤️ Suspended</option>
+          </select>
+          <button class="btn btn-magic" onclick="switchView('add-student')">
+            <i class="fas fa-wand-magic-sparkles"></i> Add Student
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container glass-card">
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll" /></th>
+              <th class="sortable" data-sort="first_name">Student <i class="fas fa-sort"></i></th>
+              <th class="sortable" data-sort="email">Email <i class="fas fa-sort"></i></th>
+              <th class="sortable" data-sort="course">Course <i class="fas fa-sort"></i></th>
+              <th class="sortable" data-sort="gpa">GPA <i class="fas fa-sort"></i></th>
+              <th>Mood</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="bulk-actions" id="bulkActions" style="display:none;">
+        <span id="selectedCount">0 selected</span>
+        <button class="btn btn-danger" id="bulkDeleteBtn">
+          <i class="fas fa-trash-can"></i> Remove Selected
+        </button>
+      </div>
+
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-illustration">🌷</div>
+        <h3>No students found yet!</h3>
+        <p>Your garden is waiting to bloom. Add your first student!</p>
+        <button class="btn btn-magic" onclick="switchView('add-student')">
+          <i class="fas fa-wand-magic-sparkles"></i> Add First Student
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════ ADD/EDIT STUDENT VIEW ═══════ -->
+    <section class="view" id="addStudentView">
+      <div class="form-card glass-card">
+        <h2 class="form-title" id="formTitle">
+          <span class="form-title-emoji">🌸</span> Add New Student
+        </h2>
+        <form id="studentForm">
+          <input type="hidden" id="studentId" />
+
+          <div class="form-section">
+            <h3 class="section-label">💝 Basic Info</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="firstName">First Name <span class="required">*</span></label>
+                <input type="text" id="firstName" required placeholder="e.g. Luna" />
+                <span class="error-msg" id="firstNameError"></span>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name <span class="required">*</span></label>
+                <input type="text" id="lastName" required placeholder="e.g. Lovegood" />
+                <span class="error-msg" id="lastNameError"></span>
+              </div>
+              <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" required placeholder="luna@hogwarts.edu" />
+                <span class="error-msg" id="emailError"></span>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="+1 (555) 123-4567" />
+              </div>
+              <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" />
+              </div>
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender">
+                  <option value="">Select...</option>
+                  <option value="Female">👩 Female</option>
+                  <option value="Male">👨 Male</option>
+                  <option value="Non-binary">🧑 Non-binary</option>
+                  <option value="Other">✨ Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-label">📚 Academic Info</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="course">Course <span class="required">*</span></label>
+                <select id="course" required>
+                  <option value="">Select Course...</option>
+                  <option value="Computer Science">💻 Computer Science</option>
+                  <option value="Mathematics">📐 Mathematics</option>
+                  <option value="Physics">⚛️ Physics</option>
+                  <option value="Chemistry">🧪 Chemistry</option>
+                  <option value="Biology">🧬 Biology</option>
+                  <option value="Engineering">⚙️ Engineering</option>
+                  <option value="Business">💼 Business</option>
+                  <option value="Literature">📖 Literature</option>
+                  <option value="Psychology">🧠 Psychology</option>
+                  <option value="Economics">📊 Economics</option>
+                  <option value="Art & Design">🎨 Art & Design</option>
+                  <option value="Music">🎵 Music</option>
+                  <option value="Medicine">🩺 Medicine</option>
+                  <option value="Law">⚖️ Law</option>
+                </select>
+                <span class="error-msg" id="courseError"></span>
+              </div>
+              <div class="form-group">
+                <label for="gpa">GPA (0.0 - 4.0)</label>
+                <input type="number" id="gpa" min="0" max="4" step="0.01" placeholder="0.00" />
+                <span class="error-msg" id="gpaError"></span>
+              </div>
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status">
+                  <option value="Active">💚 Active</option>
+                  <option value="Inactive">🤍 Inactive</option>
+                  <option value="Graduated">🎓 Graduated</option>
+                  <option value="Suspended">⏸️ Suspended</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-label">🌈 Personality & Vibe</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="profileEmoji">Profile Emoji</label>
+                <div class="emoji-picker" id="emojiPicker">
+                  <button type="button" class="emoji-btn selected" data-emoji="👩‍🎓">👩‍🎓</button>
+                  <button type="button" class="emoji-btn" data-emoji="👨‍🎓">👨‍🎓</button>
+                  <button type="button" class="emoji-btn" data-emoji="🦄">🦄</button>
+                  <button type="button" class="emoji-btn" data-emoji="🌸">🌸</button>
+                  <button type="button" class="emoji-btn" data-emoji="🦋">🦋</button>
+                  <button type="button" class="emoji-btn" data-emoji="🐱">🐱</button>
+                  <button type="button" class="emoji-btn" data-emoji="🌙">🌙</button>
+                  <button type="button" class="emoji-btn" data-emoji="🌻">🌻</button>
+                  <button type="button" class="emoji-btn" data-emoji="🍓">🍓</button>
+                  <button type="button" class="emoji-btn" data-emoji="💫">💫</button>
+                  <button type="button" class="emoji-btn" data-emoji="🎀">🎀</button>
+                  <button type="button" class="emoji-btn" data-emoji="🐰">🐰</button>
+                </div>
+                <input type="hidden" id="profileEmoji" value="👩‍🎓" />
+              </div>
+              <div class="form-group">
+                <label for="mood">Current Mood</label>
+                <div class="mood-picker" id="moodPicker">
+                  <button type="button" class="mood-btn selected" data-mood="😊">😊<small>Happy</small></button>
+                  <button type="button" class="mood-btn" data-mood="🤩">🤩<small>Excited</small></button>
+                  <button type="button" class="mood-btn" data-mood="😴">😴<small>Sleepy</small></button>
+                  <button type="button" class="mood-btn" data-mood="📚">📚<small>Studious</small></button>
+                  <button type="button" class="mood-btn" data-mood="💪">💪<small>Strong</small></button>
+                  <button type="button" class="mood-btn" data-mood="🥰">🥰<small>Loved</small></button>
+                  <button type="button" class="mood-btn" data-mood="😎">😎<small>Cool</small></button>
+                  <button type="button" class="mood-btn" data-mood="🌟">🌟<small>Shining</small></button>
+                </div>
+                <input type="hidden" id="mood" value="😊" />
+              </div>
+              <div class="form-group">
+                <label for="favoriteColor">Favorite Color</label>
+                <div class="color-picker-wrapper">
+                  <input type="color" id="favoriteColor" value="#ff69b4" />
+                  <span class="color-label" id="colorLabel">#ff69b4</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="hobby">Hobby / Interest</label>
+                <input type="text" id="hobby" placeholder="e.g. Painting, Dancing, Coding 🎨" />
+              </div>
+              <div class="form-group full-width">
+                <label for="bio">Bio / About Me</label>
+                <textarea id="bio" rows="3" placeholder="Tell us a little about yourself... ✨"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+              <i class="fas fa-xmark"></i> Cancel
+            </button>
+            <button type="submit" class="btn btn-magic" id="submitBtn">
+              <i class="fas fa-wand-magic-sparkles"></i> Save Student
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal glass-card">
+      <div class="modal-icon">😢</div>
+      <h3>Are you sure, babe?</h3>
+      <p id="deleteModalText">This student will be removed. This can't be undone!</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Nope, Keep!</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Yes, Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
